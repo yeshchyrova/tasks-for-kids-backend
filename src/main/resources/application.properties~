@@ -1,7 +1,7 @@
 spring.application.name=childrenTasksTracker
 spring.jackson.property-naming-strategy=SNAKE_CASE
 spring.flyway.locations=classpath:/db/migration
-spring.flyway.schemas=parent
+spring.flyway.schemas=employees
 spring.flyway.baselineOnMigrate=true
 spring.flyway.enabled=true
 spring.datasource.driverClassName=org.postgresql.Driver

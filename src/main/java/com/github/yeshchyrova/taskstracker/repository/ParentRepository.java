@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+// класс обрабатывает логику доступа к данным == DAO Data Access Object
 @Repository
-public interface ParentRepository extends JpaRepository<Parent, String> {
-  @Override
-  Optional<Parent> findById(String id);
-}
+public interface ParentRepository extends JpaRepository<Parent, Long> {
+//  Optional<Parent> findById(Long id);
 
+  Optional<Parent> findByEmail(String email);
+
+//  Optional<Parent> findByEmailIsIn(String name);
+}

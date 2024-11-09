@@ -1,4 +1,7 @@
 package com.github.yeshchyrova.taskstracker.service;
+// TODO: при создании нового родителя и семьи сделать это транзакцией
+// TODO: make site in black theme
+// тут есть пример - https://chatgpt.com/c/67090c4d-472c-8001-a2e2-8d51883fe9ff
 
 import com.github.yeshchyrova.taskstracker.model.Parent;
 import com.github.yeshchyrova.taskstracker.repository.ParentRepository;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -25,29 +29,46 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Slf4j
 @Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
+// отвечает за бизнес-логику, может делать валидацию, вызывать несколько репозиториев, управлять
+// транзакциями, проверять права доступа
 public class ParentService {
   private final ParentRepository parentRepository;
 
-  public Page<Parent> getAllParents(int page, int size) {
-    return parentRepository.findAll(PageRequest.of(page, size));
+  //  public Page<Parent> getAllParents(int page, int size) {
+//    return parentRepository.findAll(PageRequest.of(page, size));
+//  }
+  public List<Parent> getAllParents() {
+    return parentRepository.findAll();
   }
 
-  public Parent getParentById(String id) {
+//  public Page<Parent> getAllParents(int page, int size) {
+//    return parentRepository.findAll(PageRequest.of(page, size));
+//  }
+
+  public Parent getParentById(Long id) {
     return parentRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Parent not found"));
   }
 
-  public Parent createParent(Parent parent) {
+  public Parent getParentByEmail(String email) {
+    return parentRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Parent not found"));
+  }
+
+  public Parent saveParent(Parent parent) {
+//    save делает одну из двух вещей:
+//    если объект есть в бд, то он обновляет его, если нет, то сохраняет объект в базу данных
     return parentRepository.save(parent);
   }
 
-  public void deleteParent(String id) {
-    Parent parent = parentRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Parent not found"));
-    parentRepository.delete(parent);
-  }
+//  public void deleteParent(Long id) {
+//    Parent parent = parentRepository.findById(id)
+//            .orElseThrow(() -> new RuntimeException("Parent not found"));
+//    parentRepository.delete(parent);
+//  }
 
-//  ? --------- these 2 methods will be used for task entity, not for parent ----------
+
+//  ? --------- these 3 methods will be used for task entity, not for parent ----------
 
 //  public String uploadReport(String id, MultipartFile file) {
 //    Parent parent = getParentById(id);

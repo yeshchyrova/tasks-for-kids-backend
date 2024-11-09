@@ -10,8 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberDto {
+public class ParentDto {
+
+//  private Long id;
   private String name;
   private String email;
-  private Role role;
+  private String password;
+//  private Role role;
+//  private Long familyId;
+//  private String token;
+
 }

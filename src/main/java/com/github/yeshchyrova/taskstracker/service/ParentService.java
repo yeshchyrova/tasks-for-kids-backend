@@ -27,7 +27,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @Slf4j
-@Transactional(rollbackOn = Exception.class)
+//@Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
 // отвечает за бизнес-логику, может делать валидацию, вызывать несколько репозиториев, управлять
 // транзакциями, проверять права доступа

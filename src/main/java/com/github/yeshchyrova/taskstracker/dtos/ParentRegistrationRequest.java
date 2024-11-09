@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserRegistrationRequest {
-  private UserDto user;
-  private MemberDto member;
+public class ParentRegistrationRequest {
+  private ParentDto parent;
+  private ChildDto child;
 }

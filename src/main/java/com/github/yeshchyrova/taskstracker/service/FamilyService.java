@@ -1,6 +1,5 @@
 package com.github.yeshchyrova.taskstracker.service;
 
-import com.github.yeshchyrova.taskstracker.dtos.ParentRegistrationRequest;
 import com.github.yeshchyrova.taskstracker.model.Family;
 import com.github.yeshchyrova.taskstracker.repository.FamilyRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.github.yeshchyrova.taskstracker.service;
 
 import com.github.yeshchyrova.taskstracker.model.Family;
-import com.github.yeshchyrova.taskstracker.repository.FamilyRepository;
+import com.github.yeshchyrova.taskstracker.repositories.FamilyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package com.github.yeshchyrova.taskstracker.dtos;
 
+import com.github.yeshchyrova.taskstracker.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginRequestDto {
-  private String email;
-  private String password;
-  private String role;
+public class UserDto {
+
+  private Long id;
+  private String login;
+  private String token;
+  private Role role;
+  private Long familyId;
 }

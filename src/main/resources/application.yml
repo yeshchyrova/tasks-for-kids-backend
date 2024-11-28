@@ -3,9 +3,6 @@ spring:
     user:
       name: parent
       password: parent123
-  flyway:
-    baseline-version: 1
-    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://localhost:5432/kidsTasksTracker
     username: postgres
@@ -21,6 +18,8 @@ spring:
         globally_quoted_identifiers: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        validator:
+          apply_to_ddl: true
   servlet:
     multipart:
       enabled: true
@@ -32,10 +31,11 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${SPRING_MAIL_USERNAME}
-    password: ${SPRING_MAIL_PASSWORD}
+    username: "e.shchyrova@gmail.com"
+    password: "zbeq wbvp ehfo rcgw"
     properties:
       mail:
+        debug: true
         smtp:
           auth: true
           starttls:

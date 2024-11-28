@@ -52,7 +52,7 @@ public class SecurityConfig {
     http
             .cors(c -> c.configurationSource(corsConfigurationSource()))
             .exceptionHandling(exp -> exp.authenticationEntryPoint(new HttpStatusEntryPoint(
-                    HttpStatus.BAD_REQUEST)))
+                    HttpStatus.UNAUTHORIZED)))
             .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider),
                              BasicAuthenticationFilter.class)
             .csrf(AbstractHttpConfigurer::disable)

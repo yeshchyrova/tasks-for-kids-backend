@@ -13,4 +13,13 @@ import lombok.NoArgsConstructor;
 public class SignUpDto {
   ChildDto childDto;
   ParentDto parentDto;
+
+//  @NotEmpty
+//  private String login;
+//
+//  @NotEmpty
+//  private char[] password;
+//
+//  @NotEmpty
+//  private String role;
 }

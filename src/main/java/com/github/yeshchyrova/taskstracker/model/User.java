@@ -2,6 +2,8 @@ package com.github.yeshchyrova.taskstracker.model;
 
 import com.github.yeshchyrova.taskstracker.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,18 +21,25 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false)
+  @Size(max = 50)
+  @NotNull
+  private String name;
+
+  @Column(name = "email", unique = true)
   @Size(max = 100)
+  @Email
+  @NotNull
   private String login;
 
-  @Column(nullable = false)
   @Size(max = 100)
+  @NotNull
   private String password;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @NotNull
   private Role role;
 
-  @Column(name = "id_family", nullable = false)
+  @Column(name = "id_family")
+  @NotNull
   private Long familyId;
 }

@@ -18,7 +18,7 @@ public class UserController {
   private UserService userService;
 
 //  @PreAuthorize("hasAuthority('PARENT')")
-  @GetMapping("/children/{familyId}")
+  @GetMapping("/{familyId}/children")
   public ResponseEntity<List<ChildByFamilyDto>> getChildrenByFamilyId(@PathVariable Long familyId) {
     return ResponseEntity.ok(userService.findAllChildrenByFamilyId(familyId));
   }

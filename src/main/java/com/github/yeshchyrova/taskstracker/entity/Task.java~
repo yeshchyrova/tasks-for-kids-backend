@@ -46,7 +46,7 @@ public class Task {
   @Column(name = "task_type")
   @NotNull
   @Enumerated(EnumType.STRING)
-  private Type taskType;
+  private Type type;
 
   @Column(name = "report_type")
   @Enumerated(EnumType.STRING)

@@ -142,8 +142,8 @@ public class UserService {
                     user.getName(),
                     user.getLogin(),
                     user.getFamilyId()))
-            .collect(Collectors.toList());
-    if (children.isEmpty()) throw new AppException("Family id not found", HttpStatus.NOT_FOUND);
+            .toList();
+    if (children.isEmpty()) throw new AppException("Children not found", HttpStatus.NOT_FOUND);
     return children;
   }
 }

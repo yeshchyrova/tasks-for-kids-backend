@@ -1,6 +1,5 @@
 package com.github.yeshchyrova.taskstracker.config;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +22,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           HttpServletResponse httpServletResponse,
           FilterChain filterChain) throws ServletException, IOException {
     String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+
+    if (httpServletRequest.getRequestURI().equals("/logout")) {
+      filterChain.doFilter(httpServletRequest, httpServletResponse);
+      return;
+    }
 
     if (header != null) {
       String[] authElements = header.split(" ");

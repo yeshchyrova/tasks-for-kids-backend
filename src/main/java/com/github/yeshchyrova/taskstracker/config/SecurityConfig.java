@@ -36,11 +36,15 @@ public class SecurityConfig {
             HttpMethod.POST.name(),
             HttpMethod.PATCH.name(),
             HttpMethod.PUT.name(),
-            HttpMethod.DELETE.name()));
+            HttpMethod.DELETE.name(),
+            HttpMethod.OPTIONS.name()));
     configuration.setAllowedHeaders(Arrays.asList(
             HttpHeaders.AUTHORIZATION,
-            HttpHeaders.CONTENT_TYPE));
+            HttpHeaders.CONTENT_TYPE,
+            HttpHeaders.ACCEPT));
     configuration.setExposedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION));
+    configuration.setAllowCredentials(true);
+    configuration.addAllowedHeader("*");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
@@ -62,66 +66,8 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                     .anyRequest().authenticated())
+
     ;
     return http.build();
   }
 }
-
-
-//@Configuration
-//@EnableWebSecurity
-//@AllArgsConstructor
-//public class SecurityConfig {
-//  private final CustomUserDetailsService userDetailsService;
-//
-//  @Bean
-//  public BCryptPasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
-//
-//  @Bean
-//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//    return http
-//            .csrf(AbstractHttpConfigurer::disable)
-//            .authorizeHttpRequests(authorize -> authorize
-//                    .requestMatchers("/login", "/email", "/register", "index", "/css/*",
-//                                     "/js/*").permitAll()
-//                    .anyRequest().authenticated())
-//            .httpBasic(Customizer.withDefaults())
-//            .formLogin(login -> login.usernameParameter("email"))
-//            .rememberMe(token -> token
-//                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(100))
-//                    .rememberMeParameter("remember-me"))
-//            .logout(logout -> logout
-//                    .logoutUrl("/logout")
-//                    .logoutSuccessUrl("/login")
-//                    .clearAuthentication(true)
-//                    .invalidateHttpSession(true)
-//                    .deleteCookies("JSESSIONID", "remember-me"))
-////            .addFilterBefore(customAuthFilter(
-////                                     authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))),
-////                             UsernamePasswordAuthenticationFilter.class)
-//            .build();
-//  }
-//
-//  @Bean
-//  public AuthenticationManager authenticationManager(
-//          AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//    return authenticationConfiguration.getAuthenticationManager();
-//  }
-//
-//  @Bean
-//  public CustomAuthFilter customAuthFilter(AuthenticationManager authenticationManager) {
-//    return new CustomAuthFilter(authenticationManager);
-//  }
-//
-//  @Bean
-//  public AuthenticationProvider authenticationProvider() {
-//    // провайдер загружает данные о пользователе используя методы UserDetailsService
-//    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//    provider.setUserDetailsService(userDetailsService);
-//    provider.setPasswordEncoder(passwordEncoder());
-//    return provider;
-//  }
-//}
-

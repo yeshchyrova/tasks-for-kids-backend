@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class NewTaskDto {
   String title;
   String description = null;
-  String deadline = null;
+  LocalDateTime deadline = null;
   Type taskType = Type.OTHER;
   Report reportType = null;
   Status status = Status.TODO;

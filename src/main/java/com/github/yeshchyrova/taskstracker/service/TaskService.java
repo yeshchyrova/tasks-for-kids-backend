@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +38,22 @@ public class TaskService {
     return task;
   }
 
-  public void addTask(NewTaskDto newTask) {
+  public Object addTask(NewTaskDto newTask) {
     Task task = new Task();
+    // проверить существование айдишников, проверить с одной ли они семьи, проверить роли
     task.setTitle(newTask.getTitle());
     task.setDescription(newTask.getDescription());
-    task.setDeadline(newTask.getDeadline());
+    String customDeadline = newTask.getDeadline();
+    LocalDateTime ldt = LocalDateTime.parse(customDeadline);
+    task.setDeadline(ldt);
     task.setChildId(newTask.getChildId());
     task.setParentId(newTask.getParentId());
     task.setTaskType(newTask.getTaskType());
     task.setReportType(newTask.getReportType());
     task.setStatus(Status.TODO);
-    taskRepository.save(task);
+    Task savedTask = taskRepository.save(task);
+
+    return getTaskById(savedTask.getId());
   }
 
   public void confirmTask(Long id) {

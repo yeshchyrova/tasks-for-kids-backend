@@ -28,9 +28,9 @@ public class TaskController {
   }
 
   @PostMapping("/tasks")
-  public ResponseEntity addTask(@RequestBody NewTaskDto task) {
-    taskService.addTask(task);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<?> addTask(@RequestBody NewTaskDto task) {
+    Object savedTask = taskService.addTask(task);
+    return ResponseEntity.ok(savedTask);
   }
 
   @PatchMapping("/confirm/{taskId}")
@@ -38,5 +38,4 @@ public class TaskController {
     taskService.confirmTask(taskId);
     return ResponseEntity.ok().build();
   }
-
 }

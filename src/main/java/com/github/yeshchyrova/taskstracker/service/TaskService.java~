@@ -65,12 +65,9 @@ public class TaskService {
   }
 
 
-  public FullInfoTaskDto completeTask(CompletedTask completedTask) {
-    CompletedTask savedTask = completedTaskRepository.save(completedTask);
-    taskRepository.updateStatusById(completedTask.getId());
-    Optional<TaskWithNamesDto> updatedTask =
-            taskRepository.findTaskWithNamesById(completedTask.getId());
-    FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(updatedTask, savedTask);
+  public Object completeTask(CompletedTask completedTask) {
+    completedTaskRepository.save(completedTask);
+
   }
 
 //  public String uploadReport(Long id, MultipartFile file) {

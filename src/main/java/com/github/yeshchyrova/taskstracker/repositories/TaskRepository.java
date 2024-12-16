@@ -2,6 +2,7 @@ package com.github.yeshchyrova.taskstracker.repositories;
 
 import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
 import com.github.yeshchyrova.taskstracker.entity.Task;
+import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -54,7 +55,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   Optional<TaskWithNamesDto> findTaskWithNamesById(@Param("taskId") Long taskId);
 
   @Modifying
+  @Transactional
   @Query("update Task t set t.status='CONFIRM' where t.id=:taskId")
   void updateStatusById(@Param("taskId") Long taskId);
-
 }

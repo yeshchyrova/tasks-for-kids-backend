@@ -37,12 +37,19 @@ public class CompletedTask {
   private LocalDateTime reportTime;
 
   @NotNull
-  @Column(name = "spent_time")
-  @Type(PostgreSQLIntervalType.class)
+  @Column(name = "spent_time", columnDefinition = "interval")
+//  @Type(PostgreSQLIntervalType.class)
   private Duration spentTime;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "mood_enum")
   private Mood mood;
+
+  public void setSpentTime(String spentTime) {
+    this.spentTime = Duration.parse(spentTime); // Парсим строку в формат Duration
+  }
+
+  public String getSpentTimeAsString() {
+    return spentTime.toString(); // Возвращаем строку в формате ISO-8601
+  }
 }

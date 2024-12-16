@@ -1,5 +1,7 @@
 package com.github.yeshchyrova.taskstracker.controller;
 
+import com.github.yeshchyrova.taskstracker.dtos.CompletedTaskDto;
+import com.github.yeshchyrova.taskstracker.dtos.FullInfoTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.NewTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
 import com.github.yeshchyrova.taskstracker.entity.CompletedTask;
@@ -33,8 +35,9 @@ public class TaskController {
   }
 
   @PostMapping("/complete")
-  public ResponseEntity completeTask(@RequestBody CompletedTask completedTask) {
-
+  public ResponseEntity<FullInfoTaskDto> completeTask(@RequestBody CompletedTaskDto completedTask) {
+    FullInfoTaskDto fullTask = taskService.completeTask(completedTask);
+    return ResponseEntity.ok(fullTask);
   }
 
   @PatchMapping("/confirm/{taskId}")

@@ -14,6 +14,7 @@ public class CompletedTaskDto {
   Long id;
   String photoReport;
   String textReport;
-  Duration spentTime;
+  String reportTime;
+  String spentTime;
   Mood mood;
 }

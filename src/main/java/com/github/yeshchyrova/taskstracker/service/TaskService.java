@@ -10,11 +10,12 @@ import com.github.yeshchyrova.taskstracker.enums.Status;
 import com.github.yeshchyrova.taskstracker.exceptions.AppException;
 import com.github.yeshchyrova.taskstracker.repositories.CompletedTaskRepository;
 import com.github.yeshchyrova.taskstracker.repositories.TaskRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,12 +32,15 @@ public class TaskService {
     return tasks;
   }
 
-  public Object getTaskById(Long id) {
+  public FullInfoTaskDto getTaskById(Long id) {
     Optional<CompletedTask> completedTask = completedTaskRepository.findById(id);
     TaskWithNamesDto task = taskRepository.findTaskWithNamesById(id)
             .orElseThrow(() -> new AppException("Task not found", HttpStatus.NOT_FOUND));
-    if (completedTask.isPresent()) return new FullInfoTaskDto(task, completedTask.get());
-    return task;
+    FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(task);
+    completedTask.ifPresent(fullInfoTaskDto::setCompletedTask);
+    return fullInfoTaskDto;
+
+//    return new FullInfoTaskDto(task, completedTask.orElseGet(CompletedTask::new));
   }
 
   public Object addTask(NewTaskDto newTask) {
@@ -64,13 +68,30 @@ public class TaskService {
     taskRepository.save(task.get());
   }
 
+  @Transactional
+  public FullInfoTaskDto completeTask(CompletedTaskDto completedTask) {
+    CompletedTask complTask = new CompletedTask();
 
-  public FullInfoTaskDto completeTask(CompletedTask completedTask) {
-    CompletedTask savedTask = completedTaskRepository.save(completedTask);
+    complTask.setId(completedTask.getId());
+    complTask.setPhotoReport(completedTask.getPhotoReport());
+    complTask.setTextReport(completedTask.getTextReport());
+    complTask.setReportTime(LocalDateTime.parse(completedTask.getReportTime()));
+    complTask.setSpentTime(completedTask.getSpentTime());
+    complTask.setMood(completedTask.getMood());
+
+    CompletedTask savedTask = completedTaskRepository.save(complTask);
+
     taskRepository.updateStatusById(completedTask.getId());
-    Optional<TaskWithNamesDto> updatedTask =
-            taskRepository.findTaskWithNamesById(completedTask.getId());
-    FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(updatedTask, savedTask);
+
+//    Optional<TaskWithNamesDto> updatedTask =
+//            taskRepository.findTaskWithNamesById(completedTask.getId());
+//    FullInfoTaskDto fullInfoTaskDto =
+//            new FullInfoTaskDto(updatedTask.orElseGet(TaskWithNamesDto::new));
+    FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(
+            taskRepository.findTaskWithNamesById(completedTask.getId()).orElse(new TaskWithNamesDto())
+    );
+    fullInfoTaskDto.setCompletedTask(savedTask);
+    return fullInfoTaskDto;
   }
 
 //  public String uploadReport(Long id, MultipartFile file) {

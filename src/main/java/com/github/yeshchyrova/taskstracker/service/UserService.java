@@ -93,6 +93,7 @@ public class UserService {
   }
 
   public UserDto findByLogin(String login) {
+    System.out.println("login: " + login);
     User user = userRepository.findByLogin(login)
             .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
     return new UserDto(user.getId(), user.getName(), user.getLogin(), user.getPassword(),

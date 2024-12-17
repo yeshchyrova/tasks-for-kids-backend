@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +38,6 @@ public class TaskService {
     FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(task);
     completedTask.ifPresent(fullInfoTaskDto::setCompletedTask);
     return fullInfoTaskDto;
-
-//    return new FullInfoTaskDto(task, completedTask.orElseGet(CompletedTask::new));
   }
 
   public Object addTask(NewTaskDto newTask) {
@@ -82,18 +79,12 @@ public class TaskService {
     CompletedTask savedTask = completedTaskRepository.save(complTask);
 
     taskRepository.updateStatusById(completedTask.getId());
-
-//    Optional<TaskWithNamesDto> updatedTask =
-//            taskRepository.findTaskWithNamesById(completedTask.getId());
-//    FullInfoTaskDto fullInfoTaskDto =
-//            new FullInfoTaskDto(updatedTask.orElseGet(TaskWithNamesDto::new));
     FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(
             taskRepository.findTaskWithNamesById(completedTask.getId()).orElse(new TaskWithNamesDto())
     );
     fullInfoTaskDto.setCompletedTask(savedTask);
     return fullInfoTaskDto;
   }
-
 //  public String uploadReport(Long id, MultipartFile file) {
 //    CompletedTask completedTask = completedTaskRepository.findById(id)
 //            .orElseThrow(() -> new AppException("Task not found", HttpStatus.NOT_FOUND));

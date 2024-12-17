@@ -54,11 +54,4 @@ public class FullInfoTaskDto {
     this.spentTime = String.valueOf(completedTask.getSpentTime());
     this.mood = completedTask.getMood();
   }
-//  TaskWithNamesDto task;
-//  CompletedTask completedTask;
-//
-//  public FullInfoTaskDto(Optional<TaskWithNamesDto> updatedTask, CompletedTask savedTask) {
-//    this.task = updatedTask.orElseGet(TaskWithNamesDto::new);
-//    this.completedTask = savedTask;
-//  }
 }

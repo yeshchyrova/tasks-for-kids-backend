@@ -21,7 +21,6 @@ import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -106,32 +105,6 @@ public class UserService {
 
   public void sendEmail(String email, String password) {
     String msgBody = "Password: " + password;
-//    String msgBody = "<!DOCTYPE html>"
-//            + "<html>"
-//            + "<head>"
-//            + "    <style>"
-//            + "        .password {"
-//            + "            font-size: 24px;"
-//            + "            font-weight: bold;"
-//            + "            color: #2c3e50;"
-//            + "        }"
-//            + "    </style>"
-//            + "</head>"
-//            + "<body>"
-//            + "    <h2>Welcome to Our App!</h2>"
-//            + "    <p>Dear User,</p>"
-//            + "    <p>We’re excited to have you on board! Your parent has successfully registered" +
-//            " you in Tasks Manager system.</p>"
-//            + "    <p>To access your account, please use this email address and the password " +
-//            "below:</p>"
-//            + "    <p class=\"password\">" + password + "</p>"
-//            + "    <p>Click the link below to log in:</p>"
-//            + "    <p><a href=\"http://localhost:3000/login\" target=\"_blank\">Log In</a></p>"
-//            + "    <p>If you encounter any issues, please don't hesitate to reach out to us.</p>"
-//            + "    <p>Best regards,</p>"
-//            + "    <p>Tasks Manager Team</p>"
-//            + "</body>"
-//            + "</html>";
     emailService.sendSimpleMail(new EmailDetails(email, msgBody, "Tasks Manager"));
   }
 

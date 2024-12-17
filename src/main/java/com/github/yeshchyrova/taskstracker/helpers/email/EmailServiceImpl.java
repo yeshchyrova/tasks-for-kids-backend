@@ -1,7 +1,5 @@
 package com.github.yeshchyrova.taskstracker.helpers.email;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,8 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+  private final JavaMailSender javaMailSender;
+
   @Autowired
-  private JavaMailSender javaMailSender;
+  public EmailServiceImpl(JavaMailSender javaMailSender) {
+    this.javaMailSender = javaMailSender;
+  }
 
   @Value("${spring.mail.username}")
   private String sender;

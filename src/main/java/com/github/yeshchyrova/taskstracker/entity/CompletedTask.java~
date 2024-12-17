@@ -1,6 +1,7 @@
 package com.github.yeshchyrova.taskstracker.entity;
 
 import com.github.yeshchyrova.taskstracker.enums.Mood;
+import com.vladmihalcea.hibernate.type.interval.PostgreSQLIntervalType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -36,6 +38,7 @@ public class CompletedTask {
 
   @NotNull
   @Column(name = "spent_time", columnDefinition = "interval")
+//  @Type(PostgreSQLIntervalType.class)
   private Duration spentTime;
 
   @NotNull
@@ -43,6 +46,10 @@ public class CompletedTask {
   private Mood mood;
 
   public void setSpentTime(String spentTime) {
-    this.spentTime = Duration.parse(spentTime);
+    this.spentTime = Duration.parse(spentTime); // Парсим строку в формат Duration
+  }
+
+  public String getSpentTimeAsString() {
+    return spentTime.toString(); // Возвращаем строку в формате ISO-8601
   }
 }

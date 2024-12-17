@@ -85,11 +85,4 @@ public class TaskService {
     fullInfoTaskDto.setCompletedTask(savedTask);
     return fullInfoTaskDto;
   }
-//  public String uploadReport(Long id, MultipartFile file) {
-//    CompletedTask completedTask = completedTaskRepository.findById(id)
-//            .orElseThrow(() -> new AppException("Task not found", HttpStatus.NOT_FOUND));
-//    completedTask.setPhotoReport(reportUrl);
-//    completedTaskRepository.save(completedTask);
-//    return reportUrl;
-//  }
 }

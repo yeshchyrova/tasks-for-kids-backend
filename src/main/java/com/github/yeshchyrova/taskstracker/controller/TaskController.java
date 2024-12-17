@@ -4,7 +4,6 @@ import com.github.yeshchyrova.taskstracker.dtos.CompletedTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.FullInfoTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.NewTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
-import com.github.yeshchyrova.taskstracker.entity.CompletedTask;
 import com.github.yeshchyrova.taskstracker.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

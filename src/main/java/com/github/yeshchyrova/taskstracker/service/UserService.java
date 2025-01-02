@@ -1,9 +1,6 @@
 package com.github.yeshchyrova.taskstracker.service;
 
-import com.github.yeshchyrova.taskstracker.dtos.ChildByFamilyDto;
-import com.github.yeshchyrova.taskstracker.dtos.CredentialsDto;
-import com.github.yeshchyrova.taskstracker.dtos.SignUpDto;
-import com.github.yeshchyrova.taskstracker.dtos.UserDto;
+import com.github.yeshchyrova.taskstracker.dtos.*;
 import com.github.yeshchyrova.taskstracker.enums.Role;
 import com.github.yeshchyrova.taskstracker.exceptions.AppException;
 import com.github.yeshchyrova.taskstracker.helpers.email.EmailDetails;
@@ -119,5 +116,26 @@ public class UserService {
             .toList();
     if (children.isEmpty()) throw new AppException("Children not found", HttpStatus.NOT_FOUND);
     return children;
+  }
+
+
+  public void addFamilyMember(NewMemberDto memberDto) {
+    Optional<User> optional = userRepository.findByLogin(memberDto.getLogin());
+
+    if (optional.isPresent()) {
+      throw new AppException("This login already exists", HttpStatus.BAD_REQUEST);
+    }
+
+    User member = new User();
+    member.setName(memberDto.getName());
+    member.setLogin(memberDto.getLogin());
+    member.setRole(memberDto.getRole());
+
+    String memberPassword = generateRandomPassword();
+    member.setPassword(passwordEncoder.encode(CharBuffer.wrap(memberPassword)));
+    member.setFamilyId(memberDto.getFamilyId());
+    userRepository.save(member);
+
+    sendEmail(member.getLogin(), memberPassword);
   }
 }

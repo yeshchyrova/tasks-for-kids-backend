@@ -4,9 +4,11 @@ import com.github.yeshchyrova.taskstracker.dtos.CompletedTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.FullInfoTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.NewTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
+import com.github.yeshchyrova.taskstracker.dtos.stats.TaskTypeSpentTimeDto;
 import com.github.yeshchyrova.taskstracker.entity.CompletedTask;
 import com.github.yeshchyrova.taskstracker.entity.Task;
 import com.github.yeshchyrova.taskstracker.enums.Status;
+import com.github.yeshchyrova.taskstracker.enums.Type;
 import com.github.yeshchyrova.taskstracker.exceptions.AppException;
 import com.github.yeshchyrova.taskstracker.repositories.CompletedTaskRepository;
 import com.github.yeshchyrova.taskstracker.repositories.TaskRepository;
@@ -15,9 +17,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -80,9 +85,20 @@ public class TaskService {
 
     taskRepository.updateStatusById(completedTask.getId());
     FullInfoTaskDto fullInfoTaskDto = new FullInfoTaskDto(
-            taskRepository.findTaskWithNamesById(completedTask.getId()).orElse(new TaskWithNamesDto())
+            taskRepository.findTaskWithNamesById(completedTask.getId())
+                    .orElse(new TaskWithNamesDto())
     );
     fullInfoTaskDto.setCompletedTask(savedTask);
     return fullInfoTaskDto;
+  }
+
+  public List<TaskTypeSpentTimeDto> getSpentTimeByTaskType(Long childId) {
+    List<Map<String, Object>> results = taskRepository.findTaskTypeAndSpentTimeByChildId(childId);
+    return results.stream()
+            .map(row -> new TaskTypeSpentTimeDto(
+                    (String) row.get("taskType"),
+                    Duration.ofSeconds(((Number) row.get("spentTotal")).longValue()).toString()
+            ))
+            .toList();
   }
 }

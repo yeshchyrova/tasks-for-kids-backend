@@ -4,12 +4,14 @@ import com.github.yeshchyrova.taskstracker.dtos.CompletedTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.FullInfoTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.NewTaskDto;
 import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
+import com.github.yeshchyrova.taskstracker.dtos.stats.TaskTypeSpentTimeDto;
 import com.github.yeshchyrova.taskstracker.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -43,5 +45,11 @@ public class TaskController {
   public ResponseEntity confirmTask(@PathVariable Long taskId) {
     taskService.confirmTask(taskId);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("statistics/{childId}/spent-time-task-type")
+  public ResponseEntity<List<TaskTypeSpentTimeDto>> getSpentTimeOnTaskType(@PathVariable Long childId) {
+    List<TaskTypeSpentTimeDto> spentTimeData = taskService.getSpentTimeByTaskType(childId);
+    return ResponseEntity.ok(spentTimeData);
   }
 }

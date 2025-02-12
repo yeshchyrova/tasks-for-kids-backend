@@ -1,0 +1,11 @@
+{
+  "build": {
+    "builder": "paketobuildpacks/builder:base"
+  },
+  "deploy": {
+    "startCommand": "java -jar target/childrenTasksTracker.jar"
+  },
+  "env": {
+    "BP_JVM_VERSION": "21"
+  }
+}

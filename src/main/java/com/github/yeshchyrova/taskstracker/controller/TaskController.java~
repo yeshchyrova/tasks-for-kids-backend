@@ -57,7 +57,7 @@ public class TaskController {
 
   @GetMapping("statistics/{childId}/tasks-by-mood/{mood}")
   public ResponseEntity<List<Map<String, Object>>> getCompletedTasksByMood(@PathVariable Long childId,
-                                                   @PathVariable String mood) {
+                                                   @PathVariable Mood mood) {
     List<Map<String, Object>> res = taskService.getCompletedTasksByMood(childId, mood);
     return ResponseEntity.ok(res);
   }

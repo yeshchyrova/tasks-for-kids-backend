@@ -63,11 +63,27 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
 
   @Query(value = """
-          SELECT t.task_type AS taskType, EXTRACT(EPOCH FROM SUM(ct.spent_time)) AS spentTotal\s
-          FROM tasks t\s
-          INNER JOIN completed_tasks ct ON t.id = ct.id
-          WHERE t.id_child = :childId
-          GROUP BY t.task_type
-         \s""", nativeQuery = true)
+           SELECT t.task_type AS taskType, EXTRACT(EPOCH FROM SUM(ct.spent_time)) AS spentTotal\s
+           FROM tasks t\s
+           INNER JOIN completed_tasks ct ON t.id = ct.id
+           WHERE t.id_child = :childId
+           GROUP BY t.task_type
+          \s""", nativeQuery = true)
   List<Map<String, Object>> findTaskTypeAndSpentTimeByChildId(@Param("childId") Long childId);
+
+
+  @Query(value = """
+           select t.id, title, deadline, id_child, status, (select u.name from users u where u.id=t.id_parent) as parentName,
+                             (SELECT u.name FROM users u WHERE u.id = t.id_child) as childName from tasks t inner join completed_tasks ct on t.id=ct.id
+           where deadline is not null and report_time>deadline and t.id_child = :childId
+          \s""", nativeQuery = true)
+  List<Map<String, Object>> getExpiredTasks(@Param("childId") Long childId);
+
+  @Query(value = """
+           select t.id, title, deadline, id_child, status, (select u.name from users u where u.id=t.id_parent) as parentName,
+                             (SELECT u.name FROM users u WHERE u.id = t.id_child) as childName from tasks t
+           where id_child=:childId and id in(select id from completed_tasks where mood=:mood)
+          \s""", nativeQuery = true)
+  List<Map<String, Object>> getCompletedTasksByMood(@Param("childId") Long childId,
+                                                    @Param("mood") String mood);
 }

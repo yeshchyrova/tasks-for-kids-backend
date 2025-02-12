@@ -7,6 +7,7 @@ import com.github.yeshchyrova.taskstracker.dtos.TaskWithNamesDto;
 import com.github.yeshchyrova.taskstracker.dtos.stats.TaskTypeSpentTimeDto;
 import com.github.yeshchyrova.taskstracker.entity.CompletedTask;
 import com.github.yeshchyrova.taskstracker.entity.Task;
+import com.github.yeshchyrova.taskstracker.enums.Mood;
 import com.github.yeshchyrova.taskstracker.enums.Status;
 import com.github.yeshchyrova.taskstracker.enums.Type;
 import com.github.yeshchyrova.taskstracker.exceptions.AppException;
@@ -100,5 +101,13 @@ public class TaskService {
                     Duration.ofSeconds(((Number) row.get("spentTotal")).longValue()).toString()
             ))
             .toList();
+  }
+
+  public List<Map<String, Object>> getCompletedTasksByMood(Long childId, String mood) {
+    return taskRepository.getCompletedTasksByMood(childId, mood.toUpperCase());
+  }
+
+  public List<Map<String, Object>> getExpiredTasks(Long childId) {
+    return taskRepository.getExpiredTasks(childId);
   }
 }

@@ -7,8 +7,8 @@ spring:
       password: parent123
   datasource:
     url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    username: neondb_owner
+    password: npg_WTPr2DF6pbIw
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true

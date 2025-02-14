@@ -1,8 +1,5 @@
 {
   "build": {
-    "env": {
-      "BP_JVM_VERSION": "21"
-    }
   },
   "deploy": {
     "startCommand": "java -jar target/childrenTasksTracker.jar"

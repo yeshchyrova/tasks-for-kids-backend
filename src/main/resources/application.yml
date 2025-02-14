@@ -6,9 +6,10 @@ spring:
       name: parent
       password: parent123
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://ep-shy-hall-a87bz5gf-pooler.eastus2.azure.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_WTPr2DF6pbIw
+    driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
@@ -33,8 +34,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: e.shchyrova@gmail.com
+    password: "zbeq wbvp ehfo rcgw"
     properties:
       mail:
         debug: true

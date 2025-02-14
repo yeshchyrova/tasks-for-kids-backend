@@ -1,6 +1,9 @@
 package com.github.yeshchyrova.taskstracker.config;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+//import io.github.cdimascio.dotenv.Dotenv;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -21,14 +24,15 @@ import java.util.Date;
 @Component
 public class UserAuthenticationProvider {
 
+  @Value("${JWT_SECRET_KEY}")
   private String secretKey;
 
   private final UserService userService;
 
   @PostConstruct
   protected void init() {
-    Dotenv dotenv = Dotenv.load();
-    this.secretKey = dotenv.get("JWT_SECRET_KEY");
+//    Dotenv dotenv = Dotenv.load();
+//    this.secretKey = dotenv.get("JWT_SECRET_KEY");
 
     secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
   }

@@ -24,7 +24,7 @@ import java.util.Date;
 @Component
 public class UserAuthenticationProvider {
 
-  @Value("${JWT_SECRET_KEY}")
+  @Value("${JWT_SECRET_KEY:506ff37cc612224b61cec9435d611bf30dfa6cd86e50d89548d7781164b6958dc48b15d980149bd3100c7e0703ded2174cd08dec948ebc80ad28134a2154f948}")
   private String secretKey;
 
   private final UserService userService;

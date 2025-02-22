@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:secrets.properties
+    import: optional:file:secrets.properties,optional:env
   jackson:
     default-property-inclusion: non_null
   security:

@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordConfig {
 
-  @Value("${DATABASE_URL:NOT_SET}")
-  private String databaseUrl;
+//  @Value("${DATABASE_URL:NOT_SET}")
+//  private String databaseUrl;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    System.out.println("databaseUrl: " + databaseUrl);
+//    System.out.println("databaseUrl: " + databaseUrl);
     return new BCryptPasswordEncoder();
   }
 }

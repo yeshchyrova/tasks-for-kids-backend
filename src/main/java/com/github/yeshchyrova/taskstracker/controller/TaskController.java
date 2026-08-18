@@ -43,7 +43,7 @@ public class TaskController {
   }
 
   @PatchMapping("/confirm/{taskId}")
-  public ResponseEntity confirmTask(@PathVariable Long taskId) {
+  public ResponseEntity<Void> confirmTask(@PathVariable Long taskId) {
     taskService.confirmTask(taskId);
     return ResponseEntity.ok().build();
   }

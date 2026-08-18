@@ -8,16 +8,16 @@ spring:
       name: parent
       password: parent123
   datasource:
-    url: jdbc:postgresql://ep-shy-hall-a87bz5gf-pooler.eastus2.azure.neon.tech/neondb?sslmode=require
-    username: neondb_owner
-    password: npg_WTPr2DF6pbIw
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:taskstracker}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         globally_quoted_identifiers: true
@@ -33,17 +33,7 @@ spring:
   mvc:
     async:
       request-timeout: 3600000
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME:e.shchyrova@gmail.com}
-    password: ${MAIL_PASSWORD:zbeq wbvp ehfo rcgw}
-    properties:
-      mail:
-        debug: true
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+notification-service:
+  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8081}
 server:
   port: ${PORT:8080}

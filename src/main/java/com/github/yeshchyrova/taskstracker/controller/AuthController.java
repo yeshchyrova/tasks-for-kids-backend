@@ -26,7 +26,6 @@ public class AuthController {
   public ResponseEntity<UserDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
     UserDto userDto = userService.login(credentialsDto);
     userDto.setToken(userAuthenticationProvider.createToken(userDto));
-    System.out.println(userDto);
     return ResponseEntity.ok().header("Authorization", userDto.getToken()).body(userDto);
   }
 

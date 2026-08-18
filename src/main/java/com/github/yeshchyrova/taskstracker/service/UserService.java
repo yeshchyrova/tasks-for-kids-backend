@@ -4,12 +4,13 @@ import com.github.yeshchyrova.taskstracker.dtos.*;
 import com.github.yeshchyrova.taskstracker.enums.Role;
 import com.github.yeshchyrova.taskstracker.exceptions.AppException;
 import com.github.yeshchyrova.taskstracker.helpers.email.EmailDetails;
-import com.github.yeshchyrova.taskstracker.helpers.email.EmailServiceImpl;
+import com.github.yeshchyrova.taskstracker.helpers.email.EmailService;
 import com.github.yeshchyrova.taskstracker.entity.Family;
 import com.github.yeshchyrova.taskstracker.entity.User;
 import com.github.yeshchyrova.taskstracker.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -26,23 +28,28 @@ public class UserService {
   private final UserRepository userRepository;
   private final FamilyService familyService;
   private final PasswordEncoder passwordEncoder;
-  private final EmailServiceImpl emailService;
+  private final EmailService emailService;
 
+  private UserDto toUserDto(User user) {
+    return UserDto.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .login(user.getLogin())
+            .role(user.getRole())
+            .familyId(user.getFamilyId())
+            .build();
+  }
 
   public UserDto login(CredentialsDto credentialsDto) {
     User user = userRepository.findByLogin(credentialsDto.getLogin())
-
-            //!!!!!!!  CHANGE MESSAGE TO "INVALID LOGIN OR PASSWORD"  !!!!!
-            .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new AppException("Invalid login or password", HttpStatus.BAD_REQUEST));
 
     if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()),
                                 user.getPassword())) {
-      return new UserDto(user.getId(), user.getName(), user.getLogin(), user.getPassword(),
-                         user.getRole(), user.getFamilyId());
+      return toUserDto(user);
     }
 
-    //!!!!!!!  CHANGE MESSAGE TO "INVALID LOGIN OR PASSWORD"  !!!!!
-    throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+    throw new AppException("Invalid login or password", HttpStatus.BAD_REQUEST);
   }
 
   @Transactional
@@ -75,25 +82,19 @@ public class UserService {
     child.setLogin(usersObj.getChildDto().getLogin());
     child.setRole(Role.CHILD);
     String childPassword = generateRandomPassword();
-    System.out.println("Random child password: " + childPassword);
     child.setPassword(passwordEncoder.encode(CharBuffer.wrap(childPassword)));
     child.setFamilyId(familyId);
     userRepository.save(child);
 
-
     sendEmail(child.getLogin(), childPassword);
 
-    return new UserDto(savedParent.getId(), savedParent.getName(), savedParent.getLogin(),
-                       savedParent.getPassword(),
-                       savedParent.getRole(), savedParent.getFamilyId());
+    return toUserDto(savedParent);
   }
 
   public UserDto findByLogin(String login) {
-    System.out.println("login: " + login);
     User user = userRepository.findByLogin(login)
             .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-    return new UserDto(user.getId(), user.getName(), user.getLogin(), user.getPassword(),
-                       user.getRole(), user.getFamilyId());
+    return toUserDto(user);
   }
 
   public String generateRandomPassword() {
@@ -102,7 +103,11 @@ public class UserService {
 
   public void sendEmail(String email, String password) {
     String msgBody = "Password: " + password;
-    emailService.sendSimpleMail(new EmailDetails(email, msgBody, "Tasks Manager"));
+    try {
+      emailService.sendSimpleMail(new EmailDetails(email, msgBody, "Tasks Manager"));
+    } catch (Exception e) {
+      log.warn("Failed to send credentials email to {} via notification-service", email, e);
+    }
   }
 
   public List<ChildByFamilyDto> findAllChildrenByFamilyId(Long familyId) {

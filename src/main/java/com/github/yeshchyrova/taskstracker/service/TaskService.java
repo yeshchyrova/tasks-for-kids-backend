@@ -52,8 +52,9 @@ public class TaskService {
     task.setTitle(newTask.getTitle());
     task.setDescription(newTask.getDescription());
     String customDeadline = newTask.getDeadline();
-    LocalDateTime ldt = LocalDateTime.parse(customDeadline);
-    task.setDeadline(ldt);
+    if (customDeadline != null) {
+      task.setDeadline(LocalDateTime.parse(customDeadline));
+    }
     task.setChildId(newTask.getChildId());
     task.setParentId(newTask.getParentId());
     task.setTaskType(newTask.getTaskType());
@@ -78,7 +79,9 @@ public class TaskService {
     complTask.setId(completedTask.getId());
     complTask.setPhotoReport(completedTask.getPhotoReport());
     complTask.setTextReport(completedTask.getTextReport());
-    complTask.setReportTime(LocalDateTime.parse(completedTask.getReportTime()));
+    if (completedTask.getReportTime() != null) {
+      complTask.setReportTime(LocalDateTime.parse(completedTask.getReportTime()));
+    }
     complTask.setSpentTime(completedTask.getSpentTime());
     complTask.setMood(completedTask.getMood());
 
